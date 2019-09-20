@@ -1,4 +1,14 @@
 // Author:Nima Afraz, The Provost, Fellows, Foundation Scholars & The Other Members Of Board Of The College Of The Holy & Undivided Trinity of Queen Elizabeth near Dublin
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable strict */
+/* eslint-disable curly */
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-use-before-define */
+/* eslint-disable require-jsdoc */
+/* eslint-disable indent */
+/* eslint-disable no-var */
 
 rand = function(min, max) {
     if (min==null && max==null)
@@ -58,16 +68,15 @@ buyers.sort((a, b) => (a.bid > b.bid) ? -1 : 1);
 }
 
 function mergeback(sellers,buyers){
-newvnos = sellers.concat(buyers)
+newvnos = sellers.concat(buyers);
 newvnos.sort((a, b) => (a.vno_id > b.vno_id) ? 1 : -1);
-console.table(newvnos);
 return newvnos;
 }
 
 function find_MC_point_price(sellers, buyers){
     for (var i=0; i < Math.max(sellers.length,buyers.length); i++){
         if (i>0 && sellers[i].ask >= buyers[i].bid){
-            console.table(sellers);
+            //console.table(sellers);
             console.log('sellers[i-1].ask = ',i,i-1);
             console.log('sellers[i-1].ask = ',i,i-1,sellers[i-1].ask);
             console.log('==========RAN==============');
@@ -196,13 +205,15 @@ function balance_settle(sellers,buyers,MC_point,sellers_temp_q,buyers_temp_q){
 function auction(){
 
     vnos_org = generate_vnos();
-    vnos = vnos_org;
+    console.table(vnos_org);
+    const vnos = JSON.parse(JSON.stringify(vnos_org));
+    // vnos = vnos_org;
     [sellers,buyers] = split_seller_buyer(vnos);
 
 
     sortSB(sellers,buyers);
-    console.table(sellers);
-    console.table(buyers);
+    //console.table(sellers);
+    //console.table(buyers);
     find_MC_point_price(sellers,buyers);
     console.log(MC_point);
     console.log(sell_price);
@@ -215,9 +226,9 @@ function auction(){
 
     printSB(sellers,buyers);
     balance_settle(sellers,buyers,MC_point,sellers_temp_q,buyers_temp_q);
-    console.table(sellers);
-    console.table(buyers);
-    return mergeback(sellers,buyers);
+    //console.table(sellers);
+    //console.table(buyers);
+    return calc_won(vnos_org,mergeback(sellers,buyers));
 }
 
 function test_balance(sellers, buyers){
@@ -235,8 +246,17 @@ function test_balance(sellers, buyers){
         }
 
 
-
-for (j = 0; j <100; j++){
+function calc_won(vnos_org,newvnos){
+    for (var i=0; i < 9; i++){
+        newvnos[i].won_quantity=(vnos_org[i].quantity-newvnos[i].quantity);
+        console.log('won_quantity=====',newvnos[i].won_quantity,'=======================');
+        console.log('org_quantity=====',vnos_org[i].quantity,'new_quantity=====',newvnos[i].quantity,'=======================');
+    }
+    console.table(vnos_org);
+    console.table(newvnos);
+    return newvnos;
+}
+for (j = 0; j <1; j++){
 console.log('=========================',j,'=======================');
     auction();
     test_balance(sellers, buyers);
